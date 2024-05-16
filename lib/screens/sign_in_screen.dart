@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:memow/glassmorphism.dart';
+import 'package:memow/layout/screen_layout.dart';
+import 'package:memow/screens/sign_up_screen.dart';
 
 import 'package:memow/utils/utils.dart';
 import 'package:memow/widget/custom_main_button.dart';
@@ -42,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Image.asset('assets/grad2.png',
-                      height: ScreenSize.height * 0.2),
+                      height: ScreenSize.height * 0.12),
                   Center(
                     child: GestureDetector(
                       onTap: () {
@@ -60,7 +62,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     ),
                   ),
                   Container(
-                    height: ScreenSize.height * 0.5,
+                    height: ScreenSize.height * 0.55,
                     width: ScreenSize.width * 0.8,
                     padding: const EdgeInsets.all(15),
                     decoration: BoxDecoration(
@@ -95,7 +97,13 @@ class _SignInScreenState extends State<SignInScreen> {
                           child: CustomMainButton(
                               color: const Color.fromARGB(255, 223, 177, 231),
                               isLoading: false,
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const ScreenLayout()));
+                              },
                               child: const Text(
                                 "Sign in",
                                 style: TextStyle(
@@ -133,7 +141,12 @@ class _SignInScreenState extends State<SignInScreen> {
                   CustomMainButton(
                       color: const Color.fromARGB(255, 223, 177, 231),
                       isLoading: false,
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SignUpScreen()));
+                      },
                       child: const Text(
                         "Create a Memow account",
                         style: TextStyle(
