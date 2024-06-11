@@ -103,7 +103,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) =>
-                                                const ScreenLayout()));
+                                                HomeScreen()));
                                   },
                                   child: const Text(
                                     "Sign Up",

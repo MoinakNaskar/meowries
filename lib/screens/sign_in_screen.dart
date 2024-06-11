@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:memow/glassmorphism.dart';
 import 'package:memow/layout/screen_layout.dart';
+
+import 'package:memow/screens/earth_globe.dart';
 import 'package:memow/screens/sign_up_screen.dart';
 
 import 'package:memow/utils/utils.dart';
@@ -98,11 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               color: const Color.fromARGB(255, 223, 177, 231),
                               isLoading: false,
                               onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const ScreenLayout()));
+                                Navigator.of(context).push(_createRoute());
                               },
                               child: const Text(
                                 "Sign in",
@@ -142,10 +140,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       color: const Color.fromARGB(255, 223, 177, 231),
                       isLoading: false,
                       onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SignUpScreen()));
+                        Navigator.of(context).push(_createRoute());
                       },
                       child: const Text(
                         "Create a Memow account",
@@ -161,4 +156,26 @@ class _SignInScreenState extends State<SignInScreen> {
       ),
     );
   }
+}
+
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => HomeScreen(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      var begin = 0.0;
+      var end = 1.0;
+      var tween = Tween(begin: begin, end: end);
+      var opacityAnimation = animation.drive(tween);
+
+      return Stack(
+        children: <Widget>[
+          const EarthGlobe(),
+          FadeTransition(
+            opacity: opacityAnimation,
+            child: child,
+          ),
+        ],
+      );
+    },
+  );
 }
