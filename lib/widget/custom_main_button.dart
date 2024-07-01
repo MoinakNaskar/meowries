@@ -1,33 +1,32 @@
 import 'package:flutter/material.dart';
-import 'package:memow/utils/utils.dart';
 
 class CustomMainButton extends StatelessWidget {
-  final Widget child;
-  final Color color;
+  final Gradient gradient;
   final bool isLoading;
   final VoidCallback onPressed;
-  const CustomMainButton(
-      {super.key,
-      required this.child,
-      required this.color,
-      required this.isLoading,
-      required this.onPressed});
+  final Widget child;
+
+  const CustomMainButton({
+    super.key,
+    required this.gradient,
+    required this.isLoading,
+    required this.onPressed,
+    required this.child,
+    required Color color,
+  });
 
   @override
   Widget build(BuildContext context) {
-    Size screenSize = Utils().getScreenSize();
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            fixedSize: Size(screenSize.width * 0.5, 40),
-            shadowColor: Colors.purple[400]),
-        onPressed: onPressed,
-        child: !isLoading
-            ? child
-            : const Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
-                child: AspectRatio(
-                  aspectRatio: 1 / 1,
-                  child: CircularProgressIndicator(),
-                )));
+    return Container(
+      decoration: BoxDecoration(
+        gradient: gradient,
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: MaterialButton(
+        onPressed: isLoading ? null : onPressed,
+        textColor: Colors.white,
+        child: isLoading ? const CircularProgressIndicator() : child,
+      ),
+    );
   }
 }

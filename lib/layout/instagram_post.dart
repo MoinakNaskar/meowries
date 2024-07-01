@@ -61,8 +61,7 @@ class _InstagramPostState extends State<InstagramPost> {
                         itemBuilder: (context, index) {
                           return ListTile(
                             leading: const CircleAvatar(
-                              backgroundImage: NetworkImage(
-                                  'https://via.placeholder.com/150'),
+                              backgroundImage: NetworkImage(''),
                             ),
                             title: Text('User $index'),
                             subtitle: Text(comments[index]),
@@ -93,8 +92,7 @@ class _InstagramPostState extends State<InstagramPost> {
           children: [
             ListTile(
               leading: const CircleAvatar(
-                backgroundImage:
-                    NetworkImage('https://via.placeholder.com/150'),
+                backgroundImage: NetworkImage(''),
               ),
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -117,7 +115,7 @@ class _InstagramPostState extends State<InstagramPost> {
               ),
             ),
             Image.network(
-              'https://via.placeholder.com/600x400',
+              '',
               fit: BoxFit.cover,
             ),
             Padding(

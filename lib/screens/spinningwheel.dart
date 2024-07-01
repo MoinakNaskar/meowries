@@ -1,347 +1,279 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:math';
-import 'dart:ui';
 import 'package:flutter/material.dart';
 
-class SpinningWheelPage extends StatefulWidget {
-  const SpinningWheelPage({super.key});
+class MemoBookingWidget extends StatefulWidget {
+  const MemoBookingWidget({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _SpinningWheelPageState createState() => _SpinningWheelPageState();
+  _MemoBookingWidgetState createState() => _MemoBookingWidgetState();
 }
 
-class _SpinningWheelPageState extends State<SpinningWheelPage>
-    with TickerProviderStateMixin {
+class _MemoBookingWidgetState extends State<MemoBookingWidget>
+    with SingleTickerProviderStateMixin {
   late AnimationController _outerController;
-  late AnimationController _innerController;
   late Animation<double> _outerAnimation;
-  late Animation<double> _innerAnimation;
-  late int _selectedIndex;
-  final List<String> _sections = [
-    "Section 1",
-    "Section 2",
-    "Section 3",
-    "Section 4",
-    "Section 5",
-    "Section 6",
-    "Section 7",
-    "Section 8",
-    "Section 9"
+  int _selectedIndex = -1;
+  final List<String> _sectionImages = [
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
+    'assets/grad2.png',
   ];
+  int _currentIndex = 0;
+  bool _isPaused = false;
+  double _rotationAngle = 0.0;
 
   @override
   void initState() {
     super.initState();
     _outerController = AnimationController(
-      duration: const Duration(seconds: 3),
-      vsync: this,
-    );
-    _innerController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 30),
       vsync: this,
     );
 
     _outerAnimation =
-        CurvedAnimation(parent: _outerController, curve: Curves.easeInOut);
-    _innerAnimation =
-        CurvedAnimation(parent: _innerController, curve: Curves.easeInOut);
-    _selectedIndex = 0;
+        Tween<double>(begin: 0, end: 2 * pi).animate(_outerController);
 
-    _outerController.addStatusListener((status) {
-      if (status == AnimationStatus.completed) {
-        setState(() {
-          _selectedIndex = _calculateSelectedIndex();
-        });
-      }
-    });
+    _outerController.addListener(_onAnimationTick);
+    _outerController.repeat();
   }
 
-  int _calculateSelectedIndex() {
-    final double angle = (_outerAnimation.value * 2 * pi) % (2 * pi);
-    final double sectionAngle = 2 * pi / _sections.length;
-    return (_sections.length - (angle / sectionAngle).round()) %
-        _sections.length;
-  }
+  void _onAnimationTick() {
+    final sectionAngle = 2 * pi / _sectionImages.length;
+    final currentAngle = _outerAnimation.value % (2 * pi);
 
-  void _spinWheel(int index) {
-    final double sectionAngle = 2 * pi / _sections.length;
-    final double targetAngle = sectionAngle * index;
+    if (!_isPaused && (currentAngle / sectionAngle).round() != _currentIndex) {
+      _currentIndex =
+          (currentAngle / sectionAngle).round() % _sectionImages.length;
+      _isPaused = true;
 
-    _outerController.reset();
-    _innerController.reset();
-    _outerAnimation = Tween<double>(
-      begin: 0,
-      end: 10 * 2 * pi - targetAngle,
-    ).animate(
-        CurvedAnimation(parent: _outerController, curve: Curves.easeInOut));
-    _innerAnimation = Tween<double>(
-      begin: 0,
-      end: -10 * 2 * pi + targetAngle,
-    ).animate(
-        CurvedAnimation(parent: _innerController, curve: Curves.easeInOut));
-    _outerController.forward();
-    _innerController.forward();
+      _outerController.stop();
+      Future.delayed(const Duration(seconds: 2), () {
+        _outerController.forward();
+        _isPaused = false;
+      });
+    }
   }
 
   @override
   void dispose() {
     _outerController.dispose();
-    _innerController.dispose();
     super.dispose();
+  }
+
+  void _handleSectionTap(int index) {
+    setState(() {
+      _selectedIndex = index;
+      _outerController.stop(); // Stop the rotation when a section is tapped
+
+      // Pause for 2 seconds before navigating to the new page
+      Future.delayed(const Duration(seconds: 2), () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SectionDetailPage(
+              sectionIndex: index,
+            ),
+          ),
+        );
+      });
+    });
+  }
+
+  void _handlePanUpdate(DragUpdateDetails details) {
+    setState(() {
+      _outerController.stop();
+      _rotationAngle += details.delta.dx / 200;
+    });
+  }
+
+  void _handlePanEnd(DragEndDetails details) {
+    final sectionAngle = 2 * pi / _sectionImages.length;
+    final currentAngle = _rotationAngle % (2 * pi);
+
+    setState(() {
+      _currentIndex =
+          (currentAngle / sectionAngle).round() % _sectionImages.length;
+      _selectedIndex = _currentIndex;
+      _rotationAngle = sectionAngle * _currentIndex;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SectionDetailPage(
+            sectionIndex: _selectedIndex,
+          ),
+        ),
+      );
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Spinning Wheel'),
+        title: const Text('Memo Booking Widget'),
         backgroundColor: Colors.transparent,
+        elevation: 0,
       ),
       body: Center(
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            GestureDetector(
-              onTap: () => _spinWheel(_selectedIndex),
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  // Outer ring with clockwise rotation
-                  AnimatedBuilder(
-                    animation: _outerAnimation,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _outerAnimation.value,
-                        child: child,
-                      );
-                    },
-                    child: GlassmorphicContainer(
-                      width: 400,
-                      height: 400,
-                      borderRadius: 200,
-                      blur: 20,
-                      alignment: Alignment.center,
-                      border: 2,
-                      linearGradient: LinearGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.1),
-                          Colors.white.withOpacity(0.1),
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      borderGradient: LinearGradient(
-                        colors: [
-                          Colors.white.withOpacity(0.5),
-                          Colors.white.withOpacity(0.5),
-                        ],
-                      ),
-                      child: CustomPaint(
-                        size: const Size(400, 400),
-                        painter: WheelPainter(_sections),
-                      ),
-                    ),
-                  ),
-                  // Inner ring with anticlockwise rotation
-                  AnimatedBuilder(
-                    animation: _innerAnimation,
-                    builder: (context, child) {
-                      return Transform.rotate(
-                        angle: _innerAnimation.value,
-                        child: child,
-                      );
-                    },
-                    child: CustomPaint(
-                      size: const Size(200, 200),
-                      painter: InnerRingPainter(),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            // Center text showing selected section
-            Positioned(
-              child: Text(
-                _sections[_selectedIndex],
-                style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class WheelPainter extends CustomPainter {
-  final List<String> sections;
-  WheelPainter(this.sections);
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()..style = PaintingStyle.fill;
-    final double outerRadius = min(size.width / 2, size.height / 2);
-    final double innerRadius = outerRadius / 2;
-    final double sectionAngle = 2 * pi / sections.length;
-
-    for (int i = 0; i < sections.length; i++) {
-      final double startAngle = i * sectionAngle;
-      final double sweepAngle = sectionAngle;
-      paint.color = i.isEven
-          ? Colors.blue.withOpacity(0.5)
-          : Colors.purple.withOpacity(0.5);
-
-      // Draw outer arc
-      canvas.drawArc(
-        Rect.fromCircle(
-            center: Offset(size.width / 2, size.height / 2),
-            radius: outerRadius),
-        startAngle,
-        sweepAngle,
-        true,
-        paint,
-      );
-
-      // Draw inner arc
-      paint.color = Colors.white.withOpacity(0.2);
-      canvas.drawArc(
-        Rect.fromCircle(
-            center: Offset(size.width / 2, size.height / 2),
-            radius: innerRadius),
-        startAngle,
-        sweepAngle,
-        true,
-        paint,
-      );
-
-      // Draw text
-      final textPainter = TextPainter(
-        text: TextSpan(
-            text: sections[i],
-            style: const TextStyle(color: Colors.black, fontSize: 14)),
-        textDirection: TextDirection.ltr,
-      );
-      textPainter.layout();
-
-      final double textAngle = startAngle + sweepAngle / 2;
-      final Offset textOffset = Offset(
-        size.width / 2 +
-            (innerRadius + outerRadius) / 2 * cos(textAngle) -
-            textPainter.width / 2,
-        size.height / 2 +
-            (innerRadius + outerRadius) / 2 * sin(textAngle) -
-            textPainter.height / 2,
-      );
-
-      canvas.save();
-      canvas.translate(textOffset.dx + textPainter.width / 2,
-          textOffset.dy + textPainter.height / 2);
-      canvas.rotate(textAngle - pi / 2);
-      canvas.translate(-textOffset.dx - textPainter.width / 2,
-          -textOffset.dy - textPainter.height / 2);
-      textPainter.paint(canvas, textOffset);
-      canvas.restore();
-    }
-
-    // Draw double-lined outer ring
-    paint.color = Colors.purple;
-    paint.style = PaintingStyle.stroke;
-    paint.strokeWidth = 4;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), outerRadius, paint);
-    paint.strokeWidth = 2;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), outerRadius - 4, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class InnerRingPainter extends CustomPainter {
-  @override
-  void paint(Canvas canvas, Size size) {
-    final Paint paint = Paint()
-      ..color = Colors.black
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 4;
-
-    final double innerRadius = min(size.width / 2, size.height / 2);
-
-    // Draw double-lined inner ring
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), innerRadius, paint);
-    paint.strokeWidth = 2;
-    canvas.drawCircle(
-        Offset(size.width / 2, size.height / 2), innerRadius - 4, paint);
-  }
-
-  @override
-  bool shouldRepaint(CustomPainter oldDelegate) => false;
-}
-
-class GlassmorphicContainer extends StatelessWidget {
-  final double width;
-  final double height;
-  final double borderRadius;
-  final double blur;
-  final Alignment alignment;
-  final double border;
-  final LinearGradient linearGradient;
-  final LinearGradient borderGradient;
-  final Widget? child;
-
-  const GlassmorphicContainer({
-    super.key,
-    required this.width,
-    required this.height,
-    required this.borderRadius,
-    required this.blur,
-    required this.alignment,
-    required this.border,
-    required this.linearGradient,
-    required this.borderGradient,
-    this.child,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(borderRadius),
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: blur, sigmaY: blur),
-        child: Container(
-          width: width,
-          height: height,
-          alignment: alignment,
-          decoration: BoxDecoration(
-            gradient: linearGradient,
-            borderRadius: BorderRadius.circular(borderRadius),
-            border: Border.all(
-              width: border,
-              color: Colors.transparent,
-            ),
-          ),
+        child: GestureDetector(
+          onPanUpdate: _handlePanUpdate,
+          onPanEnd: _handlePanEnd,
           child: Stack(
+            alignment: Alignment.center,
             children: [
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(borderRadius),
-                  border: Border.all(
-                    width: border,
-                    style: BorderStyle.solid,
-                    color: borderGradient.colors.first,
+              // Outer rotating circle
+              Transform.rotate(
+                angle: _rotationAngle,
+                child: Container(
+                  width: 450,
+                  height: 450,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 220, 209, 61),
+                      width: 4,
+                    ),
+                  ),
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: List.generate(
+                      _sectionImages.length,
+                      (index) => _buildSection(index),
+                    ),
                   ),
                 ),
               ),
-              if (child != null) child!,
+              // Inner circle outline
+              Container(
+                width: 290,
+                height: 290,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: const Color.fromARGB(255, 233, 226, 78),
+                    width: 4,
+                  ),
+                ),
+              ),
+              // Triangular label on the right side
+              Positioned(
+                right: 0,
+                child: Container(
+                  width: 20,
+                  height: 20,
+                  decoration: const BoxDecoration(
+                    color: Colors.transparent,
+                  ),
+                  child: Transform.rotate(
+                    angle: -(pi / 2),
+                    child: ClipPath(
+                      clipper: TriangleClipper(),
+                      child: Container(
+                        color: const Color.fromARGB(255, 247, 245, 247),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+              // Center image showing selected section
+              if (_selectedIndex != -1)
+                Positioned(
+                  child: Image.asset(
+                    _sectionImages[_selectedIndex],
+                    width: 150,
+                    height: 150,
+                    fit: BoxFit.cover,
+                  ),
+                ),
             ],
           ),
         ),
       ),
     );
   }
+
+  Widget _buildSection(int index) {
+    final double sectionAngle = 2 * pi / _sectionImages.length;
+    // ignore: unused_local_variable
+    const double radius = 160; // Adjusted radius to decrease the gap
+
+    return Center(
+      child: Transform.rotate(
+        angle: sectionAngle * index,
+        child: Align(
+          alignment: Alignment.topCenter,
+          child: GestureDetector(
+            onTap: () => _handleSectionTap(index),
+            child: Container(
+              margin: const EdgeInsets.only(top: 10),
+              alignment: Alignment.center,
+              width: 60,
+              height: 60,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                border: Border.all(
+                  color: const Color.fromARGB(255, 246, 219, 71),
+                  width: 2,
+                ),
+              ),
+              child: Image.asset(
+                _sectionImages[index],
+                width: 60,
+                height: 60,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TriangleClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    path.moveTo(size.width / 2, 0);
+    path.lineTo(size.width, size.height);
+    path.lineTo(0, size.height);
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+
+class SectionDetailPage extends StatelessWidget {
+  final int sectionIndex;
+
+  const SectionDetailPage({super.key, required this.sectionIndex});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Section $sectionIndex Details'),
+      ),
+      body: Center(
+        child: Text('Details for section $sectionIndex'),
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: MemoBookingWidget(),
+  ));
 }

@@ -32,8 +32,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  // ignore: prefer_final_fields
-  static List<Widget> _widgetOptions = <Widget>[
+  // List of widgets for the TabBarView
+  static final List<Widget> _widgetOptions = <Widget>[
     const TrendingSection(),
     TopCreatorsSection(),
   ];
@@ -43,119 +43,124 @@ class _HomeScreenState extends State<HomeScreen> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
-          appBar: AppBar(
-            title: const GradientText(
-              'MEMOW',
-              gradient: LinearGradient(colors: [Colors.purple, Colors.blue]),
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        appBar: AppBar(
+          title: const GradientText(
+            'MEMOW',
+            gradient: LinearGradient(colors: [
+              Color.fromARGB(250, 236, 208, 52),
+              Color.fromARGB(255, 239, 91, 23)
+            ]),
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.account_circle),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const AccountDetailsSheet();
+                  },
+                );
+              },
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.account_circle),
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return const AccountDetailsSheet();
-                    },
-                  );
-                },
-              ),
-            ],
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(120.0),
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.purple.shade50,
-                        hintText: 'Find best MEMOW partner for you',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(30.0),
-                          borderSide: BorderSide.none,
-                        ),
+          ],
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(120.0),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: const Color.fromARGB(255, 245, 245, 195),
+                      hintText: 'Find best MEMOW partner for you',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(30.0),
+                        borderSide: BorderSide.none,
                       ),
                     ),
                   ),
-                  const TabBar(
-                    tabs: [
-                      Tab(text: 'TRENDING'),
-                      Tab(text: 'TOP CREATORS'),
-                    ],
-                  ),
-                ],
-              ),
+                ),
+                const TabBar(
+                  tabs: [
+                    Tab(text: 'TRENDING'),
+                    Tab(text: 'TOP CREATORS'),
+                  ],
+                ),
+              ],
             ),
           ),
-          body: TabBarView(
-            children: _widgetOptions,
-          ),
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
-          floatingActionButton: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const SpinningWheelPage()));
-                },
-                tooltip: 'Memow Booking',
-                child: const Icon(Icons.chat),
-              ),
-              FloatingActionButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SocialMediaWorldPage()),
-                  );
-                },
-                tooltip: 'Memow Verse',
-                child: const Icon(Icons.people),
-              ),
-            ],
-          ),
-          bottomNavigationBar: BottomNavigationBar(
-              onTap: (index) {
-                if (index == 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const CommunityPostPage()),
-                  );
-                } else if (index == 1) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const MemowSpectrumPage()),
-                  );
-                } else if (index == 2) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const MenuPage()),
-                  );
-                }
+        ),
+        body: TabBarView(
+          children: _widgetOptions,
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const MemoBookingWidget()),
+                );
               },
-              items: const [
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  label: 'Community Post',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.people),
-                  label: 'Memow Spectrum',
-                ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.menu),
-                  label: 'Menu',
-                ),
-              ])),
+              tooltip: 'Memow Booking',
+              child: const Icon(Icons.chat),
+            ),
+            FloatingActionButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => SocialMediaWorldPage()),
+                );
+              },
+              tooltip: 'Memow Verse',
+              child: const Icon(Icons.people),
+            ),
+          ],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          onTap: (index) {
+            if (index == 0) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const CommunityPostPage()),
+              );
+            } else if (index == 1) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const MemowSpectrumPage()),
+              );
+            } else if (index == 2) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const MenuPage()),
+              );
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Community Post',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.people),
+              label: 'Memow Spectrum',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.menu),
+              label: 'Menu',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -170,21 +175,25 @@ class AccountDetailsSheet extends StatelessWidget {
       child: Wrap(
         children: <Widget>[
           ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('User Profile'),
-              onTap: () {}),
+            leading: const Icon(Icons.person),
+            title: const Text('User Profile'),
+            onTap: () {},
+          ),
           ListTile(
-              leading: const Icon(Icons.book),
-              title: const Text('Bookings'),
-              onTap: () {}),
+            leading: const Icon(Icons.book),
+            title: const Text('Bookings'),
+            onTap: () {},
+          ),
           ListTile(
-              leading: const Icon(Icons.monetization_on),
-              title: const Text('Memow Coins'),
-              onTap: () {}),
+            leading: const Icon(Icons.monetization_on),
+            title: const Text('Memow Coins'),
+            onTap: () {},
+          ),
           ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text('Logout'),
-              onTap: () {}),
+            leading: const Icon(Icons.logout),
+            title: const Text('Logout'),
+            onTap: () {},
+          ),
         ],
       ),
     );
