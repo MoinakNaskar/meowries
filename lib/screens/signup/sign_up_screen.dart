@@ -1,4 +1,3 @@
-// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:memow/layout/screen_layout.dart';
@@ -34,69 +33,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Size screenSize = Utils().getScreenSize();
     return Scaffold(
       body: SingleChildScrollView(
-        child: SizedBox(
-          height: screenSize.height,
-          width: screenSize.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Image.asset('assets/grad2.png',
-                      height: Utils().getScreenSize().height * 0.12),
-                  SizedBox(
-                    height: screenSize.height * 0.7,
-                    child: FittedBox(
+        child: SingleChildScrollView(
+          child: SizedBox(
+            height: screenSize.height,
+            width: screenSize.width,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Image.asset('assets/logo.png',
+                        height: screenSize.height * 0.2),
+                    SingleChildScrollView(
                       child: Container(
                         height: screenSize.height * 0.8,
-                        width: screenSize.width * 1,
+                        width: screenSize.width * 0.8,
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [
+                              Color.fromARGB(255, 188, 187, 180),
+                              Color.fromARGB(255, 219, 214, 207),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
                           border: Border.all(
-                              color: Colors.purple.shade900, width: 2),
+                              color: Color.fromARGB(212, 208, 214, 87),
+                              width: 2),
                           borderRadius: BorderRadius.circular(25),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             const Text(
                               "Sign Up",
                               style: TextStyle(
-                                  fontWeight: FontWeight.w600, fontSize: 32),
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 32,
+                                  color: Color.fromARGB(255, 22, 21, 21)),
                             ),
                             TextFieldWidget(
                               title: "Name",
                               controller: nameController,
                               obscureText: false,
                               hintsText: "Enter your Name",
+                              titleColor: const Color.fromARGB(255, 21, 2, 2),
                             ),
                             TextFieldWidget(
                               title: "Address",
                               controller: addressController,
                               obscureText: false,
                               hintsText: "Enter your Address",
+                              titleColor: const Color.fromARGB(255, 18, 1, 1),
                             ),
                             TextFieldWidget(
                               title: "Email",
                               controller: emailController,
                               obscureText: false,
                               hintsText: "Enter your Email",
+                              titleColor: const Color.fromARGB(255, 16, 1, 1),
                             ),
                             TextFieldWidget(
                               title: "Password",
                               controller: passwordController,
                               obscureText: true,
                               hintsText: "Enter your Password",
+                              titleColor: const Color.fromARGB(255, 12, 1, 1),
                             ),
                             Align(
                               alignment: Alignment.center,
                               child: CustomMainButton(
-                                  color:
-                                      const Color.fromARGB(255, 223, 177, 231),
+                                  color: Colors.transparent,
                                   isLoading: false,
                                   onPressed: () {
                                     Navigator.push(
@@ -106,7 +118,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                                 const HomeScreen()));
                                   },
                                   gradient: const LinearGradient(
-                                    colors: [Colors.yellow, Colors.orange],
+                                    colors: [
+                                      Color.fromARGB(255, 18, 18, 17),
+                                      Color.fromARGB(255, 252, 250, 247)
+                                    ],
                                     begin: Alignment.topLeft,
                                     end: Alignment.bottomRight,
                                   ),
@@ -114,6 +129,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     "Sign Up",
                                     style: TextStyle(
                                       letterSpacing: 0.9,
+                                      color: Colors.white,
                                     ),
                                   )),
                             )
@@ -121,25 +137,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                  ),
-                  CustomMainButton(
-                      color: const Color.fromARGB(255, 223, 177, 231),
-                      isLoading: false,
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      gradient: const LinearGradient(
-                        colors: [Colors.white, Colors.grey],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                      child: const Text(
-                        "Back",
-                        style: TextStyle(
-                          letterSpacing: 0.1,
+                    CustomMainButton(
+                        color: Colors.transparent,
+                        isLoading: false,
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        gradient: const LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 18, 18, 17),
+                            Color.fromARGB(255, 240, 236, 230)
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
                         ),
-                      ))
-                ],
+                        child: const Text(
+                          "Back",
+                          style: TextStyle(
+                            letterSpacing: 0.1,
+                            color: Colors.white,
+                          ),
+                        ))
+                  ],
+                ),
               ),
             ),
           ),

@@ -16,7 +16,7 @@ class SignInScreen extends StatefulWidget {
 class _SignInScreenState extends State<SignInScreen> {
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
-  bool _isBlur = false;
+  bool _isBlur = true;
 
   @override
   void dispose() {
@@ -40,8 +40,9 @@ class _SignInScreenState extends State<SignInScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+                  const Spacer(),
                   Image.asset('assets/logo.png',
-                      height: screenSize.height * 0.3),
+                      height: screenSize.height * 0.5),
                   GestureDetector(
                     onTap: () {
                       setState(() {
@@ -57,6 +58,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
+                  const Spacer(),
                   Container(
                     height: screenSize.height * 0.55,
                     width: screenSize.width * 0.8,
@@ -118,6 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ],
                     ),
                   ),
+                  const Spacer(),
                   Row(
                     children: [
                       Expanded(
@@ -142,6 +145,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ],
                   ),
+                  const Spacer(),
                   CustomMainButton(
                     gradient: const LinearGradient(
                       colors: [Colors.white, Colors.grey],
@@ -160,6 +164,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       ),
                     ),
                   ),
+                  const Spacer()
                 ],
               ),
             ),

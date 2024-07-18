@@ -11,13 +11,13 @@ class TextFieldWidget extends StatefulWidget {
   final Color? titleColor;
 
   const TextFieldWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.controller,
     required this.obscureText,
     required this.hintsText,
     this.titleColor,
-  }) : super(key: key);
+  });
 
   @override
   State<TextFieldWidget> createState() => _TextFieldWidgetState();
