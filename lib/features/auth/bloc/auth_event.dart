@@ -23,9 +23,8 @@ class SignUpButtonClicked extends AuthEvent {
 }
 
 class LoginButtonClicked extends AuthEvent {
-  final int mobileNumber;
+  final String email;
   final String password;
 
-  const LoginButtonClicked(
-      {required this.mobileNumber, required this.password});
+  const LoginButtonClicked({required this.email, required this.password});
 }

@@ -6,22 +6,22 @@ class UserModel {
   final String email;
   final String userName;
   final String gender;
-  final String description;
-  final String avatar;
-  final List<String> links;
-  final List<String> feedPhotos;
-  final List<String> reels;
+  final String? description;
+  final String? avatar;
+  final List<String>? links;
+  final List<String>? feedPhotos;
+  final List<String>? reels;
 
   UserModel(
       {required this.name,
       required this.email,
       required this.userName,
       required this.gender,
-      required this.description,
-      required this.avatar,
-      required this.links,
-      required this.feedPhotos,
-      required this.reels});
+      this.description,
+      this.avatar,
+      this.links,
+      this.feedPhotos,
+      this.reels});
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -43,11 +43,18 @@ class UserModel {
       email: map['email'] as String,
       userName: map['userName'] as String,
       gender: map['gender'] as String,
-      description: map['description'] as String,
-      avatar: map['avatar'] as String,
-      links: List<String>.from(map['links'] as List<String>),
-      feedPhotos: List<String>.from(map['feedPhotos'] as List<String>),
-      reels: List<String>.from(map['reels'] as List<String>),
+      description:
+          map['description'] != null ? map['description'] as String : null,
+      avatar: map['avatar'] != null ? map['avatar'] as String : null,
+      links: map['links'] != null
+          ? List<String>.from(map['links'] as List<String>)
+          : null,
+      feedPhotos: map['feedPhotos'] != null
+          ? List<String>.from(map['feedPhotos'] as List<String>)
+          : null,
+      reels: map['reels'] != null
+          ? List<String>.from(map['reels'] as List<String>)
+          : null,
     );
   }
 

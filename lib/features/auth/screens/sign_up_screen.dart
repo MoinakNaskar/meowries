@@ -1,12 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:memow/layout/screen_layout.dart';
+import 'package:memow/features/home_memoworld/screens/home_screen.dart';
+import 'package:memow/utils/frossted_glass.dart';
 
 import 'package:memow/utils/utils.dart';
 import 'package:memow/widget/custom_main_button.dart';
 import 'package:memow/widget/text_field_widget.dart';
 
 class SignUpScreen extends StatefulWidget {
+  static const String routeName = '/signUp-screen';
   const SignUpScreen({super.key});
 
   @override
@@ -33,37 +35,32 @@ class _SignUpScreenState extends State<SignUpScreen> {
     Size screenSize = Utils().getScreenSize();
     return Scaffold(
       body: SingleChildScrollView(
-        child: SingleChildScrollView(
-          child: SizedBox(
-            height: screenSize.height,
-            width: screenSize.width,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Image.asset('assets/logo.png',
-                        height: screenSize.height * 0.2),
-                    SingleChildScrollView(
+        child: SizedBox(
+          height: screenSize.height,
+          width: screenSize.width,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset('assets/logo.png',
+                      height: screenSize.height * 0.1),
+                  SingleChildScrollView(
+                    child: FrostedGlassBox(
+                      key: null,
+                      height: screenSize.height * 0.7,
+                      width: screenSize.width * 0.8,
                       child: Container(
-                        height: screenSize.height * 0.8,
+                        height: screenSize.height * 0.7,
                         width: screenSize.width * 0.8,
                         padding: const EdgeInsets.all(15),
                         decoration: BoxDecoration(
-                          gradient: const LinearGradient(
-                            colors: [
-                              Color.fromARGB(255, 188, 187, 180),
-                              Color.fromARGB(255, 219, 214, 207),
-                            ],
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
-                          ),
                           border: Border.all(
-                              color: Color.fromARGB(212, 208, 214, 87),
+                              color: const Color.fromARGB(211, 234, 243, 69),
                               width: 2),
-                          borderRadius: BorderRadius.circular(25),
+                          borderRadius: BorderRadius.circular(18),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -119,7 +116,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   },
                                   gradient: const LinearGradient(
                                     colors: [
-                                      Color.fromARGB(255, 18, 18, 17),
+                                      Color.fromARGB(255, 233, 233, 64),
                                       Color.fromARGB(255, 252, 250, 247)
                                     ],
                                     begin: Alignment.topLeft,
@@ -129,7 +126,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     "Sign Up",
                                     style: TextStyle(
                                       letterSpacing: 0.9,
-                                      color: Colors.white,
+                                      color: Color.fromARGB(255, 4, 0, 0),
                                     ),
                                   )),
                             )
@@ -137,29 +134,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ),
                       ),
                     ),
-                    CustomMainButton(
-                        color: Colors.transparent,
-                        isLoading: false,
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        gradient: const LinearGradient(
-                          colors: [
-                            Color.fromARGB(255, 18, 18, 17),
-                            Color.fromARGB(255, 240, 236, 230)
-                          ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
+                  ),
+                  CustomMainButton(
+                      color: Colors.transparent,
+                      isLoading: false,
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      gradient: const LinearGradient(
+                        colors: [
+                          Color.fromARGB(255, 233, 233, 32),
+                          Color.fromARGB(255, 240, 236, 230)
+                        ],
+                        begin: Alignment.topRight,
+                        end: Alignment.bottomRight,
+                      ),
+                      child: const Text(
+                        "Back",
+                        style: TextStyle(
+                          letterSpacing: 0.1,
+                          color: Color.fromARGB(255, 4, 3, 3),
                         ),
-                        child: const Text(
-                          "Back",
-                          style: TextStyle(
-                            letterSpacing: 0.1,
-                            color: Colors.white,
-                          ),
-                        ))
-                  ],
-                ),
+                      ))
+                ],
               ),
             ),
           ),

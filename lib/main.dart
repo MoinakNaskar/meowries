@@ -1,15 +1,7 @@
-// ignore_for_file: unused_import
-
 import 'package:flutter/material.dart';
-
-import 'package:memow/layout/wedding_booking.dart';
-
-import 'package:memow/screens/premium_booking.dart';
-
-import 'package:memow/screens/sign_in_screen.dart';
-import 'package:memow/screens/signup/sign_up_screen.dart';
-import 'package:memow/screens/spinningwheel.dart';
-import 'package:memow/utils/customtheme.dart';
+import 'package:memow/features/auth/screens/sign_in_screen.dart';
+import 'package:memow/features/home_memoworld/screens/home_screen.dart';
+import 'package:memow/utils/frossted_glass.dart';
 
 void main() {
   runApp(const Memow());
@@ -23,7 +15,7 @@ class Memow extends StatelessWidget {
     return MaterialApp(
         title: 'MEMOWRIES',
         debugShowCheckedModeBanner: false,
-        theme: matteGlassTheme(),
+        theme: ThemeData.dark(),
         home: const SignInScreen());
   }
 }

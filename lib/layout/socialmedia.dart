@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:memow/utils/frossted_glass.dart';
 import 'package:memow/utils/utils.dart';
 
 class SocialMediaWorldPage extends StatelessWidget {
@@ -19,6 +20,7 @@ class SocialMediaWorldPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = Utils().getScreenSize();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -26,7 +28,10 @@ class SocialMediaWorldPage extends StatelessWidget {
         elevation: 0,
         title: const Text('Social Media World'),
       ),
-      body: FrostedGlassBackground(
+      body: FrostedGlassBox(
+        key: key,
+        width: screenSize.width,
+        height: screenSize.height,
         child: Container(
           child: ListView.builder(
             padding: const EdgeInsets.all(8.0),
@@ -86,6 +91,7 @@ class CreatorProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size screenSize = Utils().getScreenSize();
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -93,7 +99,10 @@ class CreatorProfilePage extends StatelessWidget {
         elevation: 0,
         title: Text(creator['name']!),
       ),
-      body: FrostedGlassBackground(
+      body: FrostedGlassBox(
+        key: null,
+        width: screenSize.width,
+        height: screenSize.height,
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
