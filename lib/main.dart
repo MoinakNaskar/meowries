@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:memow/features/auth/screens/sign_in_screen.dart';
-import 'package:memow/features/home_memoworld/screens/home_screen.dart';
-import 'package:memow/utils/frossted_glass.dart';
 
 void main() {
   runApp(const Memow());

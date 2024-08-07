@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:ui';
 
 import 'package:memow/common/single_post.dart';
+import 'package:memow/features/home_memoworld/screens/profiles_page.dart';
 import 'package:memow/utils/frossted_glass.dart';
 import 'package:memow/utils/utils.dart';
 
@@ -131,7 +132,7 @@ class _InstagramPostState extends State<InstagramPost> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => UserProfilePage(username: widget.username),
+        builder: (context) => UserProfilePage(),
       ),
     );
   }
@@ -362,24 +363,6 @@ class _InstagramPostState extends State<InstagramPost> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class UserProfilePage extends StatelessWidget {
-  final String username;
-
-  const UserProfilePage({super.key, required this.username});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(username),
-      ),
-      body: Center(
-        child: Text('Profile page of $username'),
       ),
     );
   }
