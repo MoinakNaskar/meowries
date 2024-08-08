@@ -182,8 +182,8 @@ class _InstagramPostState extends State<InstagramPost> {
                                     begin: Alignment.topCenter,
                                     end: Alignment.bottomCenter,
                                     colors: [
-                                      Colors.black54,
-                                      Color.fromARGB(241, 41, 38, 38),
+                                      Color.fromARGB(136, 89, 88, 88),
+                                      Color.fromARGB(255, 43, 41, 41),
                                     ],
                                   ),
                                 ),
@@ -200,7 +200,7 @@ class _InstagramPostState extends State<InstagramPost> {
                                     begin: Alignment.bottomCenter,
                                     end: Alignment.topCenter,
                                     colors: [
-                                      Colors.black54,
+                                      Color.fromARGB(136, 89, 88, 88),
                                       Color.fromARGB(255, 43, 41, 41),
                                     ],
                                   ),

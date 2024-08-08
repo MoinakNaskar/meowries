@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:memow/features/home_memoworld/screens/post_card.dart';
 import 'package:memow/features/home_memoworld/screens/story_circle.dart';
@@ -85,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 [
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                        horizontal: 16.0, vertical: 10.0),
+                        horizontal: 1.0, vertical: 1.0),
                     child: TextField(
                       decoration: InputDecoration(
                         icon: const Icon(Icons.search),
@@ -97,37 +98,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10.0),
                   const StoriesSection(),
-                  const SizedBox(height: 10.0),
-                  const TabBar(
-                    tabs: [
-                      Tab(text: 'TRENDING'),
-                      Tab(text: 'FOLLOWING'),
-                    ],
-                  ),
-                  SizedBox(
-                    height: MediaQuery.of(context).size.height,
-                    child: TabBarView(
-                      children: _widgetOptions.map((Widget widget) {
-                        return SingleChildScrollView(
-                          child: widget,
-                        );
-                      }).toList(),
+                  Padding(
+                    padding: const EdgeInsets.all(5.0),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(5),
+                      child: BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+                        child: Container(
+                          color:
+                              Color.fromARGB(36, 99, 99, 98).withOpacity(0.3),
+                          child: const TabBar(
+                            tabs: [
+                              Tab(text: 'TRENDING'),
+                              Tab(text: 'FOLLOWING'),
+                            ],
+                          ),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
+            SliverFillRemaining(
+              child: TabBarView(
+                children: _widgetOptions.map((Widget widget) {
+                  return SingleChildScrollView(
+                    child: widget,
+                  );
+                }).toList(),
+              ),
+            ),
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
-        backgroundColor: const Color.fromARGB(255, 6, 5, 5),
+        backgroundColor: Color.fromARGB(242, 12, 2, 2),
         floatingActionButton: FloatingActionButton(
           shape: const CircleBorder(eccentricity: 1),
-          backgroundColor: Colors.amber,
-          focusColor: Colors.black,
-          elevation: 50,
+          backgroundColor: Color.fromARGB(195, 15, 12, 4),
+          focusColor: Color.fromARGB(255, 242, 207, 34),
+          elevation: 100,
           mouseCursor: SystemMouseCursors.click,
           onPressed: () {
             Navigator.push(
@@ -140,48 +151,84 @@ class _HomeScreenState extends State<HomeScreen> {
           tooltip: 'Memow Booking',
           child: const Icon(Icons.book),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          backgroundColor: Colors.amber,
-          selectedItemColor: const Color.fromARGB(242, 160, 5, 175),
-          onTap: (index) {
-            if (index == 0) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const CommunityPostPage(),
-                ),
-              );
-            } else if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MemowSpectrumPage(),
-                ),
-              );
-            } else if (index == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const MenuPage(),
-                ),
-              );
-            }
-          },
-          items: const [
-            BottomNavigationBarItem(
-              backgroundColor: Color.fromARGB(240, 240, 41, 41),
-              icon: Icon(Icons.people),
-              label: 'Community Post',
+        bottomNavigationBar: Container(
+          height: 80,
+          width: 100,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(30.0),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: BottomNavigationBar(
+                backgroundColor: Colors.white.withOpacity(0.3),
+                selectedItemColor: Color.fromARGB(241, 243, 202, 19),
+                unselectedItemColor: Colors.white,
+                showSelectedLabels: true,
+                showUnselectedLabels: false,
+                onTap: (index) {
+                  if (index == 0) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const CommunityPostPage(),
+                      ),
+                    );
+                  } else if (index == 1) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MemowSpectrumPage(),
+                      ),
+                    );
+                  } else if (index == 2) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MenuPage(),
+                      ),
+                    );
+                  }
+                },
+                items: const [
+                  BottomNavigationBarItem(
+                    backgroundColor: Color.fromARGB(45, 202, 201, 198),
+                    icon: ImageIcon(
+                      AssetImage('assets/icons/home.png'),
+                      size: 40,
+                    ),
+                    label: 'Home',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      AssetImage('assets/icons/location.png'),
+                      size: 40,
+                    ),
+                    label: 'Clips',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      AssetImage('assets/icons/spectrum.png'),
+                      size: 40,
+                    ),
+                    label: 'Spectrum',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      AssetImage('assets/icons/find_friends.png'),
+                      size: 40,
+                    ),
+                    label: 'Find',
+                  ),
+                  BottomNavigationBarItem(
+                    icon: ImageIcon(
+                      AssetImage('assets/icons/menu.png'),
+                      size: 45,
+                    ),
+                    label: 'Menu',
+                  ),
+                ],
+              ),
             ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.people),
-              label: 'Memow Spectrum',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.menu),
-              label: 'Menu',
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -308,7 +355,7 @@ class MemowSpectrumPage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Image World'),
+              child: const Text('Go to Spinning Wheel'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -319,13 +366,83 @@ class MemowSpectrumPage extends StatelessWidget {
                   ),
                 );
               },
-              child: const Text('Creations'),
+              child: const Text('Go to New Page'),
             ),
           ],
         ),
       ),
     );
   }
+}
+
+class MenuPage extends StatelessWidget {
+  const MenuPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Menu Page'),
+      ),
+      body: Center(
+        child: const Text('Menu Page Content'),
+      ),
+    );
+  }
+}
+
+class StoriesSection extends StatelessWidget {
+  const StoriesSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(5.0),
+      child: ClipRRect(
+          borderRadius: BorderRadius.circular(10.0),
+          child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 10.0, sigmaY: 10.0),
+              child: Container(
+                  color: Color.fromARGB(87, 134, 133, 133).withOpacity(0.3),
+                  child: Container(
+                    height: 80,
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: 5,
+                      itemBuilder: (context, index) {
+                        return StoryCircle(
+                          username: 'user_$index',
+                          userImage: 'assets/logo.jpg',
+                          userStories: const [
+                            'assets/back.jpg',
+                            'assets/back.jpg',
+                            'assets/back.jpg',
+                          ], // Replace with your asset
+                        );
+                      },
+                    ),
+                  )))),
+    );
+  }
+}
+
+class Post {
+  final String username;
+  final String userImage;
+  final List<String> postMedia;
+  final String caption;
+  final int likes;
+  final int comments;
+
+  Post({
+    required this.username,
+    required this.userImage,
+    required this.postMedia,
+    required this.caption,
+    required this.likes,
+    required this.comments,
+  });
 }
 
 class ImageWorldPage extends StatelessWidget {
@@ -382,49 +499,4 @@ class CreationsPage extends StatelessWidget {
       ),
     );
   }
-}
-
-class StoriesSection extends StatelessWidget {
-  const StoriesSection({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 100,
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return StoryCircle(
-            username: 'user_$index',
-            userImage: 'assets/logo.jpg',
-            userStories: const [
-              'assets/back.jpg',
-              'assets/back.jpg',
-              'assets/back.jpg',
-            ], // Replace with your asset
-          );
-        },
-      ),
-    );
-  }
-}
-
-class Post {
-  final String username;
-  final String userImage;
-  final List<String> postMedia;
-  final String caption;
-  final int likes;
-  final int comments;
-
-  Post({
-    required this.username,
-    required this.userImage,
-    required this.postMedia,
-    required this.caption,
-    required this.likes,
-    required this.comments,
-  });
 }
